@@ -1,6 +1,7 @@
 package com.hidalgosoft.municipios.service.impl;
 
 import com.hidalgosoft.municipios.configuration.JdbcDto;
+import com.hidalgosoft.municipios.model.response.ApiResponse;
 import com.hidalgosoft.municipios.service.ReadFileService;
 import com.hidalgosoft.municipios.service.SQLService;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +22,7 @@ public class SQLServiceImpl implements SQLService {
     @Autowired
     private ReadFileService readFileService;
     @Override
-    public Map<Object, List<Map<String, Object>>> performDatabaseOperations(String filePath, String sqlQuery) {
+    public ApiResponse<Object> performDatabaseOperations(String filePath, String sqlQuery) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         Map<String, String> propertiesDB = readFileService.readFileProperties(filePath);
@@ -52,14 +53,13 @@ public class SQLServiceImpl implements SQLService {
                 log.error(ex.getMessage());
             }
         } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
             log.error(ex.getMessage());
+            return ApiResponse.error(ex.getMessage());
         }
 
         Map<Object, List<Map<String, Object>>> resultado = resultList.stream()
                 .collect(Collectors.groupingBy(mapa -> mapa.get("tipo_servicio")));
-        // Devuelve la lista de mapas representando el resultado de la consulta
-        return resultado;
+        return ApiResponse.ok(resultado);
     }
 
     @Override
