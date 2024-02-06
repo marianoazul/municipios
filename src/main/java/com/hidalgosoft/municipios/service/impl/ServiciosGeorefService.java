@@ -21,17 +21,21 @@ import java.util.stream.Collectors;
 @Service
 public class ServiciosGeorefService {
 
-    @Autowired
-    private ServiciosGeorefRepository repository;
+    private final ServiciosGeorefRepository repository;
+
+    private final SQLService sqlService;
+
+    private final EstadoRepository estadoRepository;
+
+    private final MunicipioRepository municipioRepository;
 
     @Autowired
-    private SQLService sqlService;
-
-    @Autowired
-    private EstadoRepository estadoRepository;
-
-    @Autowired
-    private MunicipioRepository municipioRepository;
+    public ServiciosGeorefService(ServiciosGeorefRepository repository, SQLService sqlService, EstadoRepository estadoRepository, MunicipioRepository municipioRepository) {
+        this.repository = repository;
+        this.sqlService = sqlService;
+        this.estadoRepository = estadoRepository;
+        this.municipioRepository = municipioRepository;
+    }
 
     public ApiResponse<Object> findByMunicipioIdAndAplicacion(Long municipioId, String aplicacion) {
         List<ServiciosGeoref> serviciosGeorefencia = repository.findByMunicipioIdAndAplicacion(municipioId, aplicacion);

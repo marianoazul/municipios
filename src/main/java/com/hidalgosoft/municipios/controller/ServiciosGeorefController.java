@@ -17,8 +17,12 @@ import java.util.List;
 @RequestMapping("/api/v1/georeferencia")
 public class ServiciosGeorefController {
 
+    private final ServiciosGeorefService service;
+
     @Autowired
-    private ServiciosGeorefService service;
+    public ServiciosGeorefController(ServiciosGeorefService service) {
+        this.service = service;
+    }
 
     @GetMapping("/{municipioId}/{aplicacion}")
     public ResponseEntity<ApiResponse<Object>> getByMunicipioIdAndAplicacion(

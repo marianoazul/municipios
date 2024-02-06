@@ -19,8 +19,13 @@ import java.util.stream.Collectors;
 @Log4j2
 public class SQLServiceImpl implements SQLService {
 
-    @Autowired
-    private ReadFileService readFileService;
+    private final ReadFileService readFileService;
+
+   @Autowired
+    public SQLServiceImpl(ReadFileService readFileService) {
+        this.readFileService = readFileService;
+    }
+
     @Override
     public ApiResponse<Object> performDatabaseOperations(String filePath, String sqlQuery) {
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -64,6 +69,5 @@ public class SQLServiceImpl implements SQLService {
 
     @Override
     public void performDatabaseOperations2(String file) {
-
     }
 }
